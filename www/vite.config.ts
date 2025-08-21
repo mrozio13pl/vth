@@ -14,7 +14,12 @@ export default defineConfig({
     plugins: [
         UnoCSS(),
         Pages({
-            dirs: 'app/pages',
+            dirs: [
+                {
+                    dir: 'app/pages',
+                    baseRoute: '/vth',
+                },
+            ],
             importMode: 'async',
             resolver: 'react',
         }),
