@@ -10,6 +10,7 @@ import mdx from '@mdx-js/rollup';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
+    base: '/vth/',
     plugins: [
         UnoCSS(),
         Pages({

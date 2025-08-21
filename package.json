@@ -1,5 +1,6 @@
 {
   "name": "vth",
+  "version": "0.1.0",
   "private": true,
   "license": "MIT",
   "author": "mrozio13pl",
@@ -7,7 +8,7 @@
   "scripts": {
     "build": "turbo build",
     "build:docs": "turbo build --filter=www",
-    "changelog": "chng",
+    "changelog": "chng && git add changelog.md",
     "dev": "turbo dev --filter=!./templates/*",
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint",
