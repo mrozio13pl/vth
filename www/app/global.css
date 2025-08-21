@@ -1,0 +1,13 @@
+body {
+    font-family: 'Outfit Variable', sans-serif;
+    box-sizing: border-box;
+    --at-apply: antialiased overflow-x-hidden w-screen;
+}
+
+*::selection {
+    --at-apply: bg-primary text-foreground;
+}
+
+.dark {
+    --background: 20 14.3% 8.1%;
+}

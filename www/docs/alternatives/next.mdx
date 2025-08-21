@@ -1,0 +1,39 @@
+# Why not NextJS?
+
+I've been a NextJS dev for some time now and I liked it because of how easy and nice it was to have a server and a client work together in one codebase without crazy tricks.
+
+But when I began working on more complex projects I quickly run to many issues with this framework...
+
+### Performance
+
+NextJS is slow. It just is. You literally have to sometimes wait like a minute after you run the dev command before being able to access anything.
+It is mostly due to using Webpack as its build tool and even with Turbo or Rspack, NextJS is still slow and using a TON of memory.
+
+### Not "full-stack"
+
+Contrary to what you may think, NextJS is not actually a *full-stack* framework.
+
+A full-stack framework brings its own utilities like database layer, auth, etc. 
+NextJS is meant to be framework to build around with tools of your choice and that's not a bad thing.
+But if it's just a framework meant to be extended, it is much more difficult to do in NextJS, especially with Webpack.
+You can't access raw requests on the backend, access to only Webpack and NextJS plugins, etc.
+
+### Not very "hackable"
+
+NextJS makes deep customization much more difficult because it's bound to certain choices:
+
+- React as the frontend library
+- Build system locked into Webpack/Turbopack
+- Very limited low-level server control
+
+### Bloated
+
+NextJS is bloated. It is more than 170 MB in package size, which can feel heavy for small or simple apps.
+
+### Limited hosting options
+
+While you can host a Next.js app almost anywhere, the framework is heavily optimized for Vercel.
+
+Many features like Edge Functions or corn jobs are far easier to integrate on Vercel.
+
+It's much easier and cheaper if you just host your app on some VPS and use Coolify.

@@ -1,0 +1,7 @@
+pre-commit:
+  parallel: true
+  commands:
+    eslint:
+      glob: "*.{js,ts,jsx,tsx,json,mjs,cjs,mts,cts}"
+      run: npx eslint --fix {staged_files} || true
+      stage_fixed: true

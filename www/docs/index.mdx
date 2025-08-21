@@ -1,0 +1,25 @@
+# What's vth?
+
+vth is a TypeScript full-stack template designed to provide the best developer experience.
+It is centered around [Vite](https://vite.dev/), a fast web build tool.
+Because Vite is very hackable and flexible, it can be used to serve both frontend and backend simultaneously
+without the need to work with complex parallel scripts.
+
+## Features
+
+- **Shared codebase**: Server and Client code easily integrated in a single project. No need for a monorepo!
+- **Fully type-safe**: Guaranteed type-safety with Hono's tRPC and Kysely query builder.
+- **Control**: Easily configurable with Vite. Use plugins for Vite and Rollup.
+- **Performant**: Fast-driven development and build time with Rolldown.
+
+## Why?
+
+I wanted an easy and predictable setup for NodeJS to have a server and a client in the same codebase.
+While I understand why you would want to use something like a monorepo,
+I find it sometimes difficult to work in a monorepo, because you need to configure it,
+setup all scripts, shared configs and even then it's not really suitable for a web application
+as you need to constantly switch between the client and server files, navigating thru the entire
+monorepo just to get to the server/client/shared package is not ideal. However, the most annoying bit
+is actually sharing the code by a package, usually something like `shared` package.
+
+> Read [this](/docs/alternatives/next) if coming from NextJS.
