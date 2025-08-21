@@ -12,14 +12,14 @@
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint",
     "prepare": "lefthook install",
-    "prerelease": "pnpm lint && pnpm build && pnpm changelog",
+    "prerelease": "pnpm lint && pnpm build",
     "release": "bumpp && pnpm -r publish"
   },
   "devDependencies": {
     "@types/node": "catalog:",
     "@vth/eslint-config": "workspace:",
     "bumpp": "^10.2.3",
-    "chng": "^0.1.0",
+    "chng": "^0.1.1",
     "eslint": "catalog:",
     "lefthook": "^1.12.3",
     "only-allow": "^1.2.1",
