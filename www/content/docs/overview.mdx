@@ -1,0 +1,91 @@
+---
+title: Overview
+description: An overview of the vth stack and how it works
+icon: Box
+---
+
+import { File, Folder, Files } from 'fumadocs-ui/components/files';
+import { SiNpm, SiTypescript, SiReact } from '@icons-pack/react-simple-icons';
+
+# Project structure
+
+After you initialized your project, the structure should look something like this:
+
+<Files>
+    <Folder name="vth" defaultOpen>
+        <Folder name="app" defaultOpen>
+            <File icon={<SiReact />} name="index.tsx" />
+            <Folder name="pages" />
+        </Folder>
+
+        <Folder name="components" defaultOpen>
+            <Folder name="ui" />
+        </Folder>
+
+        <Folder name="lib">
+            <File icon={<SiTypescript />} name="auth.ts" />
+            <File icon={<SiTypescript />} name="auth-client.ts" />
+            <File icon={<SiTypescript />} name="client.ts" />
+            <File icon={<SiTypescript />} name="database.ts" />
+            <File icon={<SiTypescript />} name="schemas.ts" />
+            <File icon={<SiTypescript />} name="types.ts" />
+            <File icon={<SiTypescript />} name="utils.ts" />
+        </Folder>
+
+        <Folder name="server" defaultOpen>
+            <File icon={<SiReact />} name="index.tsx" />
+            <File icon={<SiReact />} name="refresh.tsx" />
+        </Folder>
+
+        <File name="package.json" icon={<SiNpm />} />
+    </Folder>
+</Files>
+
+## Stack
+
+### Recommended extensions (for VSCode)
+
+- [UnoCSS](https://marketplace.visualstudio.com/items?itemName=antfu.unocss) - UnoCSS autocomplete
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) - JavaScript/TypeScript linter
+
+### Build tool
+
+This template is centered around [Vite](https://vite.dev/) as it's very flexible and hackable, providing good DX while  simultaneously handling client and server.
+
+#### Why VIte?
+
+- Way more performant with [rolldown](https://rolldown.rs/) (replacement for esbuild and rollup) than bundlers like webpack
+- Very customizable when it comes to complex apps
+- Versatile for stuff like PWA, different frameworks, in our case a seperate SMTP server and customizable build outputs
+- Rich of plugins making it easy to extend the app
+
+### Frontend
+
+The frontend is built with [React](https://react.dev/), but it shouldn't be difficult to switch to another one you prefer.
+
+#### Routing
+
+Routing is made with [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages) and [react-router](https://reactrouter.com/) which is configured to mimic Next.js-like frontend experience.
+
+#### Styling
+
+CSS is mostly done with [UnoCSS](https://unocss.dev/), a flexible atomic CSS engine, basically a more extensible, un-opinionated alternative to [TailwindCSS](https://tailwindcss.com/).
+
+[LightningCSS](https://lightningcss.dev/) is used for CSS minification.
+
+Style reset comes from [Eric Meyer CSS Reset](https://meyerweb.com/eric/tools/css/reset/index.html) provided by [@unocss/reset](https://unocss.dev/guide/style-reset).
+
+#### UI Components
+
+- [Radix UI](https://radix-ui.com/) - Accessible, unstyled component primitives
+- [Lucide](https://lucide.dev/) - Community-backed SVG icon library
+
+### Backend
+
+The backend is build with [Hono](https://hono.dev/) and its [Vite plugins](https://github.com/honojs/vite-plugins).
+
+#### Why Hono?
+
+- Easy to understand and integrate with Vite
+- Very customizable and extendable
+- Type-safe and has RPC client out of the box

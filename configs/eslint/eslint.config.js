@@ -9,11 +9,24 @@ import stylistic from '@stylistic/eslint-plugin';
 import { globalIgnores } from 'eslint/config';
 
 export default tseslint.config([
-    globalIgnores(['**/node_modules/**', '**/dist/**', '**/coverage/**', '**/templates/**', '**/.templates/**', '**/tsconfig.json']),
+    globalIgnores(
+        [
+            '**/node_modules/**',
+            '**/dist/**',
+            '**/build/**',
+            '**/.react-router/**',
+            '**/source.generated.ts',
+            '**/coverage/**',
+            '**/templates/**',
+            '**/.templates/**',
+            '**/tsconfig.json',
+        ],
+    ),
     {
         files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx', '**/*.cjs', '**/*.mjs', '**/*.cts', '**/*.mts'],
         rules: {
             'prefer-const': 'error',
+            'react-refresh/only-export-components': 'off',
             '@eslint-react/dom/no-missing-button-type': 'off',
             '@eslint-react/no-array-index-key': 'off',
             '@typescript-eslint/no-explicit-any': 'off',

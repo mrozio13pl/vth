@@ -1,0 +1,52 @@
+---
+title: Lite
+description: Lite vth template
+---
+
+import { File, Folder, Files } from 'fumadocs-ui/components/files';
+import { SiNpm, SiTypescript, SiReact } from '@icons-pack/react-simple-icons';
+
+## Introduction
+
+This template is a minimal version of the full-stack vth template.
+
+It includes [Vite](https://vitejs.dev/), [React](https://react.dev/) for the frontend and [Hono](https://hono.dev/) for the backend and RPC.
+
+## Getting started
+
+To use this template, run the CLI with `--lite` flag:
+
+```npm
+npm create vth --lite
+```
+
+...or download from the repository:
+
+```npm title="Terminal"
+npx degit mrozio13pl/vth/templates/lite
+```
+
+## Project structure
+
+The project structure is very similar to the full-stack template:
+
+<Files>
+    <Folder name="vth" defaultOpen>
+        <Folder name="app" defaultOpen>
+            <File icon={<SiReact />} name="index.tsx" />
+        </Folder>
+
+        <Folder name="lib" defaultOpen>
+            <File icon={<SiTypescript />} name="client.ts" />
+        </Folder>
+
+        <Folder name="server" defaultOpen>
+            <File icon={<SiReact />} name="index.tsx" />
+            <File icon={<SiReact />} name="refresh.tsx" />
+        </Folder>
+
+        <File name="package.json" icon={<SiNpm />} />
+    </Folder>
+</Files>
+
+> Note: This setup doesn't include [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages) for routing out of the box.

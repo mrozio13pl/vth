@@ -1,0 +1,15 @@
+{
+  "title": "vth",
+  "description": "The docs framework",
+  "root": true,
+  "pages": [
+    "---Introduction---",
+    "index",
+    "quickstart",
+    "overview",
+    "---Templates---",
+    "...templates",
+    "---Alternatives---",
+    "...alternatives"
+  ]
+}

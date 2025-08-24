@@ -1,0 +1,113 @@
+---
+title: Quickstart
+description: Getting started with vth
+icon: Rocket
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+# Getting started
+
+The easiest way to create a vth project is with the [create-vth](https://npm.im/create-vth) CLI:
+
+<Steps>
+
+<Step>
+
+### Create vth project
+
+Run the following command for your package manager:
+
+```npm title="Terminal"
+npm create vth
+```
+
+Then follow the prompts.
+
+</Step>
+
+<Step>
+
+### Start the development server
+
+Once you have created your project you can `cd` into it and run the development server:
+
+```npm title="Terminal"
+npm run dev
+```
+
+This will start Vite dev server you can visit at [`localhost:5173`](http://localhost:5173).
+It handles all client and API requests as well as hot refreshing for both frontend and backend.
+
+</Step>
+
+<Step>
+
+### First build
+
+To build your project simply run the `build` script:
+
+```npm title="Terminal"
+npm run build
+```
+
+It will execute two Vite build commands to first build the client and then the server.
+You can then run the app just by simply executing the main entry which should be located in `./dist/index.js`.
+
+</Step>
+
+</Steps>
+
+## Manual setup
+
+If you prefer not to use the CLI, you can manually setup your project with [degit](https://github.com/Rich-Harris/degit):
+
+<Steps>
+
+<Step>
+
+### Clone the template
+
+Clone the template from the repository:
+
+```npm title="Terminal"
+npx degit mrozio13pl/vth/templates/full
+```
+
+</Step>
+
+<Step>
+
+### Rename .gitignore
+
+Make sure `.gitignore` is working as expected:
+
+```sh title="Terminal"
+rename _gitignore .gitignore
+```
+
+</Step>
+
+<Step>
+
+### Install dependencies
+
+```npm title="Terminal"
+npm install
+```
+
+</Step>
+
+<Step>
+
+### Start the development server
+
+You can now start the development server:
+
+```npm title="Terminal"
+npm run dev
+```
+
+</Step>
+
+</Steps>
