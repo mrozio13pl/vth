@@ -43,8 +43,9 @@ Flags:
       --lite            use lite template                                                                                                                                    
       --nolyfill        remove old polyfills                                                                                                                                 
       --override        override existing files                                                                                                                              
+  -r, --rolldown        use rolldown-vite                                                                                                                                    
       --version         Show version                                                                                                                                         
-  -y, --yes             skip prompts                                                                                                                                         
+  -y, --yes             skip prompts                                                                                                                                          
 ```
 
 ## Documentation

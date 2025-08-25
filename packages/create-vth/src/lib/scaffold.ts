@@ -46,6 +46,10 @@ export async function scaffold(options: ProjectOptions) {
 
     pkg.name = options.name;
 
+    if (options.rolldown === false) {
+        pkg.devDependencies!.vite = '^7';
+    }
+
     await fs.writeFile(joindist('package.json'), JSON.stringify(pkg, null, 2) + '\n', 'utf8');
 
     spinner.message?.('Detecting package manager...');

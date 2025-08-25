@@ -30,6 +30,11 @@ const argv = cli({
             type: Boolean,
             description: 'remove old polyfills',
         },
+        rolldown: {
+            type: Boolean,
+            description: 'use rolldown-vite',
+            alias: 'r',
+        },
         override: {
             type: Boolean,
             description: 'override existing files',
@@ -46,6 +51,7 @@ export default async function init() {
         name: argv._.projectName || '',
         lite: argv.flags.lite,
         nolyfill: argv.flags.nolyfill,
+        rolldown: argv.flags.rolldown,
         override: argv.flags.override,
         skipPrompts: argv.flags.yes,
     };
@@ -87,6 +93,13 @@ export default async function init() {
         prompts.log.error(`${defaults.name} is not empty, use --override to override`);
         return cancel();
     }
+
+    defaults.rolldown = defaults.rolldown ?? await prompts.confirm({
+        message: 'Use Rolldown?',
+        initialValue: true,
+    }) as boolean;
+
+    if (prompts.isCancel(defaults.rolldown)) return cancel();
 
     defaults.nolyfill = defaults.nolyfill ?? await prompts.confirm({
         message: 'Remove old polyfills with nolyfill?',
