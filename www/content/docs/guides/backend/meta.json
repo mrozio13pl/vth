@@ -1,0 +1,9 @@
+{
+    "description": "Backend",
+    "defaultOpen": true,
+    "pages": [
+        "server",
+        "database",
+        "auth"
+    ]
+}

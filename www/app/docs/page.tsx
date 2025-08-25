@@ -1,5 +1,6 @@
 import type { Route } from './+types/page';
 import { DocsLayout } from 'fumadocs-ui/layouts/docs';
+import { Callout } from 'fumadocs-ui/components/callout';
 import {
     DocsBody,
     DocsDescription,
@@ -34,7 +35,11 @@ const renderer = toClientRenderer(
                 <DocsTitle>{frontmatter.title}</DocsTitle>
                 <DocsDescription>{frontmatter.description}</DocsDescription>
                 <DocsBody>
-                    <Mdx components={{ ...defaultMdxComponents }} />
+                    <Mdx components={{
+                        ...defaultMdxComponents,
+                        blockquote: Callout,
+                    }}
+                    />
                 </DocsBody>
             </DocsPage>
         );

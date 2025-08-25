@@ -1,0 +1,72 @@
+---
+title: Client
+description: Client side structure and features
+icon: Globe
+---
+
+import { File, Folder, Files } from 'fumadocs-ui/components/files';
+import { SiReact } from '@icons-pack/react-simple-icons';
+
+## Client
+
+The frontend is written in [React](https://react.dev/).
+
+### Why React?
+
+React is a popular library for building user interfaces, it's fast, flexible and has a large ecosystem built around it.
+
+### Routing
+
+Routing is made with [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages) and [react-router](https://reactrouter.com/) which is configured to mimic Next.js-like frontend experience.
+
+<Files>
+    <Folder name="app" defaultOpen>
+        <File icon={<SiReact />} name="index.tsx" defaultOpen />
+        <Folder name="pages" defaultOpen>
+            <File icon={<SiReact />} name="index.tsx" />
+            <File icon={<SiReact />} name="example.tsx" />
+        </Folder>
+    </Folder>
+</Files>
+
+- `app/index.tsx` is the main entry point for the app
+- `app/pages/index.tsx` is the home page
+- `app/pages/example.tsx` is the example page which can be accessed via `/example` in the browser
+
+### tRPC
+
+tRPC comes from [Hono's RPC](https://hono.dev/docs/guides/rpc).
+
+```ts title="lib/client.ts"
+import { hc } from 'hono/client';
+import type { App } from '@/server';
+
+export const client = hc<App>('/api');
+```
+
+You can combine it with [React Query](https://react-query.tanstack.com/):
+
+```tsx
+import { useQuery } from '@tanstack/react-query';
+import { client } from '@/lib/client';
+
+const { data: todos, isLoading, refetch } = useQuery({
+    queryKey: ['example'],
+    queryFn: async () => {
+        const res = await client.example.$get();
+        return res.json();
+    },
+});
+```
+
+### Forms
+
+You can use [react-hook-form](https://react-hook-form.com/) to handle forms.
+
+> I recommend using [valibot](https://valibot.dev) to validate your forms.
+
+### Performance
+
+For monitoring performance issues on the client in development, [React Scan](https://react-scan.com/) is a tool that helps you identify them without having to do any code changes.
+
+The script is injected in the [backend](/docs/guides/backend/server#how-to-use-it-in-vth).

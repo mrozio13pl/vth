@@ -1,0 +1,139 @@
+---
+title: Authentication
+description: Authentication guide
+icon: Key
+---
+
+## Authentication
+
+Auth is done with [better-auth](https://www.better-auth.com/), a comprehensive authentication library.
+
+### Why better-auth?
+
+better-auth can be used in basically any environment thanks to its flexibility. It can be integrated with backend, frontend and database very easily. It also comes with a lot of useful features like email or phone verification, password reset, Captcha, social sign-in like Google, Facebook, GitHub, and more.
+
+### How to use it in vth?
+
+In other to use better-auth properly you have to integrate it with backend and frontend.
+
+#### Server-side
+
+Server-side logic is stored in `lib/auth.ts`, it's integrated with SQLite database and can be used in API routes. This setup includes a simple email and password authentication:
+
+```ts title="lib/auth.ts"
+import { betterAuth } from 'better-auth';
+import { db } from '@/lib/database';
+
+export const auth = betterAuth({
+    database: { db },
+    emailAndPassword: {
+        enabled: true,
+    },
+});
+```
+
+Now you can implement routes for Hono:
+
+```ts title="server/index.tsx"
+/** @jsxImportSource hono/jsx */
+
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';// [!code highlight]
+import { serveStatic } from '@hono/node-server/serve-static';
+import { auth } from '@/lib/auth';// [!code highlight]
+
+const app = new Hono<{
+    // [!code highlight:4]
+    Variables: {
+        user: typeof auth.$Infer.Session.user | null;
+        session: typeof auth.$Infer.Session.session | null;
+    };
+}>();
+
+// [!code highlight:13]
+app.use('*', async (c, next) => {
+    const session = await auth.api.getSession({ headers: c.req.raw.headers });
+
+    if (!session) {
+        c.set('user', null);
+        c.set('session', null);
+        return next();
+    }
+
+    c.set('user', session.user);
+    c.set('session', session.session);
+    return next();
+});
+
+// [!code highlight:11]
+app.use(
+    '/api/auth/*',
+    cors({
+        origin: process.env.BETTER_AUTH_URL,
+        allowHeaders: ['Content-Type', 'Authorization'],
+        allowMethods: ['POST', 'GET', 'OPTIONS'],
+        exposeHeaders: ['Content-Length'],
+        maxAge: 600,
+        credentials: true,
+    }),
+);
+
+// [!code highlight]
+app.on(['POST', 'GET'], '/api/auth/**', (c) => auth.handler(c.req.raw));
+
+// ...
+```
+
+Now to access the authenticated user you can use `c.get('user')` in API route:
+
+```ts
+app.get('/api/secret', async (c) => {
+    const user = c.get('user'); // [!code highlight]
+
+    if (!user) {
+        return c.json({ message: 'Not authenticated' }, 401);
+    }
+
+    return c.json({ message: `Hello ${user.email}` });
+});
+```
+
+#### Client-side
+
+Client-side logic is stored in `/lib/auth-client.ts`:
+
+```ts title="lib/auth-client.ts"
+import { createAuthClient } from 'better-auth/react';
+
+export const authClient = createAuthClient();
+
+export const { useSession } = authClient;
+```
+
+Now you can use it in your components:
+
+```tsx
+import { authClient } from '@/lib/auth-client';
+
+await authClient.signIn.email({
+    email,
+    password,
+    callbackURL: '/dashboard',
+}, {
+    onError: (error) => {
+        // handle error
+    },
+});
+```
+
+To get the user data you can use [`useSession`](https://www.better-auth.com/docs/concepts/session-management#use-sessionk) in your components:
+
+```tsx
+import { useSession } from '@/lib/auth-client';
+
+const { data: session, isPending, error, refetch } = useSession();
+```
+
+### Learn more
+
+See [docs](https://www.better-auth.com/docs) to learn more.

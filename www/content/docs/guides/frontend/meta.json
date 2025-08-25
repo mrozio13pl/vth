@@ -1,0 +1,8 @@
+{
+    "description": "Frontend",
+    "defaultOpen": true,
+    "pages": [
+        "client",
+        "styling"
+    ]
+}

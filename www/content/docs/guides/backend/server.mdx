@@ -1,0 +1,134 @@
+---
+title: Server
+description: Server-side structure and features
+icon: Server
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+## Server
+
+The backend is written in [Hono](https://hono.dev/), a lightweight and fast web framework.
+
+### Why Hono?
+
+Hono is a fast, clean, lightweight and easy to use backend framework. It works great especially in a shared codebase with its type-safe routes and RPC client out of the box.
+
+Hono also provides [plugins](https://github.com/honojs/vite-plugins) for Vite, which makes it easy to use with Vite.
+
+### How to use it in vth?
+
+The backend in stored in `server/index.tsx`, it handles both routes and serves client files.
+
+```ts title="server/index.tsx"
+/** @jsxImportSource hono/jsx */
+
+import { Hono } from 'hono';
+import { serveStatic } from '@hono/node-server/serve-static';
+
+const app = new Hono();
+
+const api = new Hono();
+
+app.route('/api', api);
+
+if (import.meta.env.PROD) {
+    app.get('/*', serveStatic({ root: './dist' }));
+}
+
+app.get('/*', (c) => {
+    return c.html(
+        <html>
+            <head>
+                <meta charSet="utf-8" />
+                <meta content="width=device-width, initial-scale=1" name="viewport" />
+                <title>☄️ vth template</title>
+
+                {import.meta.env.PROD ? (
+                    <>
+                        <script type="module" src="/static/client.js" />
+                        <link
+                            rel="stylesheet"
+                            href="/static/assets/style.css"
+                            precedence="default"
+                        />
+                    </>
+                ) : (
+                    <>
+                        <script type="module" src="/server/refresh.ts" />
+                        <script type="module" src="/app/index.tsx" />
+                    </>
+                )}
+            </head>
+            <body>
+                <div id="root" />
+            </body>
+        </html>,
+    );
+});
+
+export type App = typeof api; // for hono client
+
+export default app;
+```
+
+> This example only serves client files.
+
+#### Hot refresh
+
+For development, you have to include a seperate script to handle hot refresh. This is because plugins like [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react) can't inject the refresh script when working with Hono.
+
+```ts title="server/refresh.ts"
+import RefreshRuntime from '/@react-refresh';
+RefreshRuntime.injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$RefreshSig$ = () => (type) => type;
+window.__vite_plugin_react_preamble_installed__ = true;
+```
+
+#### Adding routes
+
+The easiest way to add a route is to create a file inside `server/routes` directory. The file should export a `Hono` router and be named after the route.
+
+```ts title="server/routes/example.ts"
+import { Hono } from 'hono';
+
+export const exampleRouter = new Hono()
+    .get('/', (c) => c.text('example route'))
+    .post('/', (c) => c.text('example route'));
+```
+
+<Callout type='warn'>
+    To insure tRPC works as expected, every route must be defined in a single chain expression.
+</Callout>
+
+This approach would break tRPC:
+
+```ts title="server/routes/example.ts"
+import { Hono } from 'hono';
+
+const exampleRouter = new Hono()
+
+exampleRouter.get('/', (c) => c.text('example route')); // [!code --]
+exampleRouter.post('/', (c) => c.text('example route')); // [!code --]
+
+export { exampleRouter };
+```
+
+Now add it to `server/index.tsx`:
+
+```ts title="server/index.tsx"
+import { Hono } from 'hono';
+import { exampleRouter } from './routes/example';
+
+const app = new Hono()
+
+const api = new Hono()
+    .route('/example', exampleRouter); // [!code ++]
+
+// ...
+```
+
+### Learn more
+
+Visit [Hono documentation](https://hono.dev/docs) for more information.

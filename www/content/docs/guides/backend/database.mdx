@@ -1,0 +1,84 @@
+---
+title: Database
+description: Database guide
+icon: Database
+---
+
+## Database
+
+The database is stored in [SQLite](https://sqlite.org/).
+
+### Why SQLite?
+
+SQLite is a small, fast and easy to use database engine, no need for a complex setup.
+
+### Query builder
+
+The query builder is made with [Kysely](https://kysely.dev/) allowing you to write queries in a type-safe way.
+
+### How to use it in vth?
+
+First define your database schema in `lib/types.ts` with types: 
+
+```ts title="lib/types.ts"
+import type { Generated } from 'kysely';
+
+export interface Database {
+    example: {
+        id: Generated<number>;
+        message: string;
+    }
+}
+```
+
+Then create the database in `lib/database.ts`:
+
+```ts title="lib/database.ts"
+import SQlite from 'better-sqlite3';
+import { Kysely, SqliteDialect } from 'kysely';
+import type { Database } from '@/lib/types';
+
+const dialect = new SqliteDialect({
+    database: new SQlite('storage.db'),
+});
+
+export const db = new Kysely<Database>({
+    dialect,
+});
+
+// generate the table
+await db.schema
+    .createTable('example')
+    .ifNotExists()
+    .addColumn('id', 'integer', (col) => col.autoIncrement().primaryKey())
+    .addColumn('message', 'text')
+    .execute();
+```
+
+#### Querying data
+
+To create your first query use the created `db` instance:
+
+```ts
+import { db } from '@/lib/database';
+
+const todos = await db
+    .selectFrom('example')
+    .selectAll()
+    .where('id', '=', 1)
+    .executeTakeFirst();
+```
+
+You can find more examples in the [Kysely documentation](https://kysely.dev/docs/intro).
+
+### Alternatives
+
+You can use multiple database engines without much effort, such as:
+
+- PostgreSQL
+- MySQL
+- MS SQL
+
+> All of these engines are supported by Kysely and better-auth.
+
+If you want to use a different database engine like MongoDB, you'll need to make additional changes like using a different query builder like [Mongoose](https://mongoosejs.com/).

@@ -6,6 +6,7 @@ const getUrl = createGetUrl('/docs');
 
 export default {
     ssr: false,
+    basename: '/vth/',
     async prerender({ getStaticPaths }) {
         const paths: string[] = [...getStaticPaths()];
 
