@@ -1,5 +1,4 @@
 import eslintJs from '@eslint/js';
-import css from '@eslint/css';
 import eslintReact from '@eslint-react/eslint-plugin';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
@@ -35,17 +34,5 @@ export default tseslint.config([
                 semi: true,
             }),
         ],
-    },
-    {
-        files: ['**/*.css'],
-        plugins: {
-            css,
-        },
-        language: 'css/css',
-        extends: [css.configs.recommended],
-        rules: {
-            'css/use-baseline': 'off',
-            'css/no-important': 'off',
-        },
     },
 ]);

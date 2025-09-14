@@ -1,10 +1,9 @@
 import eslintJs from '@eslint/js';
-import css from '@eslint/css';
+import markdown from '@eslint/markdown';
 import react from '@eslint-react/eslint-plugin';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import packageJson from 'eslint-plugin-package-json';
-import markdown from 'eslint-plugin-markdown';
 import stylistic from '@stylistic/eslint-plugin';
 import { globalIgnores } from 'eslint/config';
 
@@ -60,18 +59,6 @@ export default tseslint.config([
         ],
     },
     {
-        files: ['**/*.css'],
-        plugins: {
-            css,
-        },
-        language: 'css/css',
-        extends: [css.configs.recommended],
-        rules: {
-            'css/use-baseline': 'off',
-            'css/no-important': 'off',
-        },
-    },
-    {
         files: ['package.json', '**/package.json'],
         extends: [packageJson.configs.recommended],
         rules: {
@@ -79,5 +66,13 @@ export default tseslint.config([
             'package-json/require-version': 'off',
         },
     },
-    ...markdown.configs.recommended,
+    {
+        files: ['**/*.md'],
+        extends: [markdown.configs.recommended],
+        rules: {
+            'markdown/fenced-code-language': 'off',
+            'markdown/heading-increment': 'off',
+            'markdown/no-missing-label-refs': 'off', // github's markdown
+        },
+    },
 ]);

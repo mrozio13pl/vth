@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 import rsc from '@vitejs/plugin-rsc';
 import rscPages from 'vite-plugin-rsc-pages';
 import eslint from 'vite-plugin-eslint2';
-import inspect from "vite-plugin-inspect";
+import inspect from 'vite-plugin-inspect';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import nodeExternals from 'rollup-plugin-node-externals';
 import dotenv from '@next/env';
@@ -36,7 +36,7 @@ const sharedConfig = defineConfig({
             },
             external: ['better-sqlite3'],
         },
-        minify: false
+        minify: false,
     },
     ssr: {
         external: ['better-sqlite3'],
@@ -65,14 +65,14 @@ const config = defineConfig(({ command }) => {
 
     return {
         build: {
-            minify: true
+            minify: true,
         },
         define,
         plugins: [
             rsc({
                 entries: {
                     rsc: 'server/index.tsx',
-                }
+                },
             }),
             rscPages(),
             eslint({
@@ -91,7 +91,7 @@ const serveConfig = defineConfig({
         rollupOptions: {
             input: 'server/production.ts',
             output: {
-                entryFileNames: 'index.js'
+                entryFileNames: 'index.js',
             },
             external: ['../dist/rsc/index.js'],
         },
