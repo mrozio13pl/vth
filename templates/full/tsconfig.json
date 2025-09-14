@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "types": ["vite/client", "vite-plugin-pages/client-react", "hono"],
+    "types": ["vite/client", "vite-plugin-rsc-pages/types", "@vitejs/plugin-rsc/types", "hono"],
     "paths": {
       "@/*": ["./*"]
     }

@@ -3,6 +3,7 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { serveStatic } from '@hono/node-server/serve-static';
+import { rsc } from '~rsc';
 import { auth } from '@/lib/auth';
 import { todoRouter } from './routes/todo';
 
@@ -41,6 +42,11 @@ app.use(
 
 app.on(['POST', 'GET'], '/api/auth/**', (c) => auth.handler(c.req.raw));
 
+// serving client
+if (import.meta.env.PROD) {
+    app.get('/*', serveStatic({ root: './dist/client' }));
+}
+
 // add more routers below
 const api = new Hono()
     .route('/todo', todoRouter);
@@ -50,43 +56,11 @@ api.use('*', async (c) => c.notFound());
 
 app.route('/api', api);
 
-// serving production files
-if (import.meta.env.PROD) {
-    app.get('/*', serveStatic({ root: './dist' }));
-}
-
+// serving client
 app.get('/*', (c) => {
-    return c.html(
-        <html>
-            <head>
-                <meta charSet="utf-8" />
-                <meta content="width=device-width, initial-scale=1" name="viewport" />
-                <title>vth stack</title>
-
-                {import.meta.env.PROD ? (
-                    <>
-                        <script type="module" src="/static/client.js" />
-                        <link
-                            rel="stylesheet"
-                            href="/static/assets/style.css"
-                            precedence="default"
-                        />
-                    </>
-                ) : (
-                    <>
-                        <script type="module" src="/node_modules/react-scan/dist/auto.global.js" />
-                        <script type="module" src="/server/refresh.ts" />
-                        <script type="module" src="/app/index.tsx" />
-                    </>
-                )}
-            </head>
-            <body className="antialiased">
-                <div id="root" />
-            </body>
-        </html>,
-    );
+    return rsc(c.req.raw);
 });
 
 export type App = typeof api;
 
-export default app;
+export default app.fetch;

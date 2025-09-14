@@ -1,13 +1,13 @@
 import { defineConfig, mergeConfig } from 'vite';
-import Pages from 'vite-plugin-pages';
-import UnoCSS from 'unocss/vite';
+import tailwindcss from '@tailwindcss/vite';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import react from '@vitejs/plugin-react';
+import rsc from '@vitejs/plugin-rsc';
+import rscPages from 'vite-plugin-rsc-pages';
 import eslint from 'vite-plugin-eslint2';
+import inspect from "vite-plugin-inspect";
 import tsconfigPaths from 'vite-tsconfig-paths';
-import devServer from '@hono/vite-dev-server';
-import nodeAdapter from '@hono/vite-dev-server/node';
-import build from '@hono/vite-build/node';
+import nodeExternals from 'rollup-plugin-node-externals';
 import dotenv from '@next/env';
 
 // helper for loading and replacing environment variables
@@ -36,76 +36,74 @@ const sharedConfig = defineConfig({
             },
             external: ['better-sqlite3'],
         },
+        minify: false
     },
     ssr: {
         external: ['better-sqlite3'],
     },
 });
 
-// plugins for server and client
 const plugins = [
-    UnoCSS(),
-    Pages({
-        dirs: 'app/pages',
-        importMode: 'async',
-        resolver: 'react',
-    }),
+    tailwindcss(),
     ViteImageOptimizer(),
     react(),
     tsconfigPaths(),
+    nodeExternals({
+        builtins: true,
+        deps: false,
+    }),
+    inspect(),
 ];
 
 const port = +(process.env.PORT || 3000);
 
-const config = defineConfig({
-    build: {
-        rollupOptions: {
-            output: {
-                entryFileNames: '_worker.js',
-            },
+const config = defineConfig(({ command }) => {
+    // prevents react from using dev mode in production
+    const define = command === 'serve' ? {} : {
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV ?? 'production'),
+    };
+
+    return {
+        build: {
+            minify: true
         },
-    },
-    plugins: [
-        devServer({
-            entry: 'server/index.tsx',
-            adapter: nodeAdapter,
-        }),
-        build({
-            entry: 'server/index.tsx',
-            port,
-            minify: true,
-        }),
-        eslint({
-            fix: true,
-            include: ['**/*.{js,jsx,ts,tsx}', 'package.json'],
-            emitError: false,
-            exclude: ['server/index.tsx'],
-        }),
-        ...plugins,
-    ],
-    server: { port },
+        define,
+        plugins: [
+            rsc({
+                entries: {
+                    rsc: 'server/index.tsx',
+                }
+            }),
+            rscPages(),
+            eslint({
+                fix: true,
+                include: ['**/*.{js,jsx,ts,tsx}'],
+                emitError: false,
+            }),
+            ...plugins,
+        ],
+        server: { port },
+    };
 });
 
-const clientConfig = defineConfig({
+const serveConfig = defineConfig({
     build: {
         rollupOptions: {
-            input: ['./app/index.tsx'],
+            input: 'server/production.ts',
             output: {
-                entryFileNames: 'static/client.js',
-                chunkFileNames: 'static/assets/[name]-[hash].js',
-                assetFileNames: 'static/assets/[name].[ext]',
+                entryFileNames: 'index.js'
             },
+            external: ['../dist/rsc/index.js'],
         },
-        copyPublicDir: false,
-        cssCodeSplit: false,
+        emptyOutDir: false,
     },
     plugins,
 });
 
-export default defineConfig(({ mode }) => {
-    if (mode === 'client') {
-        return mergeConfig(clientConfig, sharedConfig);
+export default defineConfig((env) => {
+    if (env.mode === 'serve') {
+        return mergeConfig(serveConfig, sharedConfig);
     }
 
-    return mergeConfig(config, sharedConfig);
+    return mergeConfig(config(env), sharedConfig);
 });

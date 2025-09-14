@@ -18,7 +18,7 @@ pnpm dev
 bun dev
 ```
 
-Start editing the page by modifying `app/pages/index.tsx`. Save the file to see your app update automatically.
+Start editing the page by modifying `app/page.tsx`. Save the file to see your app update automatically.
 
 For handling server logic, see `server/index.tsx` file. If you want to extend API create a new file in `routes` directory:
 
