@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "react-router build",
+    "build": "react-router build && cpy build/client/vth/** build/client --flat && premove build/client/vth",
     "dev": "react-router dev"
   },
   "dependencies": {
@@ -42,6 +42,8 @@
     "@types/react-dom": "^19.1.7",
     "@types/three": "^0.179.0",
     "@vitejs/plugin-react": "^5.0.1",
+    "cpy-cli": "^6.0.0",
+    "premove": "^4.0.0",
     "react-router-devtools": "^5.0.7",
     "tailwindcss": "^4.1.12",
     "tailwindcss-motion": "^1.1.1",
