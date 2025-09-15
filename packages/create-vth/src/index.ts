@@ -1,15 +1,14 @@
 import { cli } from 'cleye';
 import * as prompts from '@clack/prompts';
 import isValidFilename from 'valid-filename';
-import packageNameRegex from 'package-name-regex';
 import path from 'node:path';
 import fs from 'node:fs';
 import { generateLogo } from '@/lib/logo';
 import { checkUpdates } from '@/lib/updater';
 import { scaffold } from '@/lib/scaffold';
+import { isValidPackageName, toValidPackageName } from '@/lib/pkg';
 import { name, description, version } from '@/package.json' assert { type: 'json' };
 import type { ProjectOptions } from '@/types';
-import { isValidPackageName, toValidPackageName } from './lib/pkg';
 
 const argv = cli({
     name,
