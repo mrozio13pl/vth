@@ -11,6 +11,7 @@ import { LOCKS } from 'package-manager-detector/constants';
 import { execPmCommand } from '@/lib/exec';
 import { templatePath } from '@/lib/constants';
 import { unicodeFallback } from '@/lib/unicode';
+import { toValidPackageName } from '@/lib/pkg'; ;
 import type { ProjectOptions } from '@/types';
 import type { PackageJSON } from '@npm/types';
 
@@ -44,7 +45,7 @@ export async function scaffold(options: ProjectOptions) {
         await fs.readFile(joindist('package.json'), 'utf8'),
     );
 
-    pkg.name = options.name;
+    pkg.name = toValidPackageName(options.name);
 
     if (options.rolldown === false) {
         pkg.devDependencies!.vite = '^7';
