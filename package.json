@@ -13,7 +13,7 @@
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint",
     "prepare": "lefthook install",
-    "prerelease": "pnpm lint && pnpm build",
+    "prerelease": "pnpm lint",
     "release": "bumpp && pnpm -r publish"
   },
   "devDependencies": {

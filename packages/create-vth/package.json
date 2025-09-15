@@ -17,7 +17,8 @@
     ],
     "scripts": {
         "build": "tsdown",
-        "dev": "cross-env NODE_ENV=development tsdown --watch"
+        "dev": "cross-env NODE_ENV=development tsdown --watch",
+        "prepublishOnly": "npm run build"
     },
     "devDependencies": {
         "@clack/prompts": "^0.11.0",
