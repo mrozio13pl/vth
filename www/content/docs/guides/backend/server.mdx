@@ -25,6 +25,7 @@ The backend in stored in `server/index.tsx`, it handles both routes and serves c
 
 import { Hono } from 'hono';
 import { serveStatic } from '@hono/node-server/serve-static';
+import { rsc } from '~rsc';
 
 const app = new Hono();
 
@@ -33,39 +34,10 @@ const api = new Hono();
 app.route('/api', api);
 
 if (import.meta.env.PROD) {
-    app.get('/*', serveStatic({ root: './dist' }));
+    app.get('/*', serveStatic({ root: './dist/client' }));
 }
 
-app.get('/*', (c) => {
-    return c.html(
-        <html>
-            <head>
-                <meta charSet="utf-8" />
-                <meta content="width=device-width, initial-scale=1" name="viewport" />
-                <title>☄️ vth template</title>
-
-                {import.meta.env.PROD ? (
-                    <>
-                        <script type="module" src="/static/client.js" />
-                        <link
-                            rel="stylesheet"
-                            href="/static/assets/style.css"
-                            precedence="default"
-                        />
-                    </>
-                ) : (
-                    <>
-                        <script type="module" src="/server/refresh.ts" />
-                        <script type="module" src="/app/index.tsx" />
-                    </>
-                )}
-            </head>
-            <body>
-                <div id="root" />
-            </body>
-        </html>,
-    );
-});
+app.get('/*', (c) => rsc(c.req.raw)); // handling frontend requests
 
 export type App = typeof api; // for hono client
 
@@ -73,18 +45,6 @@ export default app;
 ```
 
 > This example only serves client files.
-
-#### Hot refresh
-
-For development, you have to include a seperate script to handle hot refresh. This is because plugins like [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react) can't inject the refresh script when working with Hono.
-
-```ts title="server/refresh.ts"
-import RefreshRuntime from '/@react-refresh';
-RefreshRuntime.injectIntoGlobalHook(window);
-window.$RefreshReg$ = () => {};
-window.$RefreshSig$ = () => (type) => type;
-window.__vite_plugin_react_preamble_installed__ = true;
-```
 
 #### Adding routes
 

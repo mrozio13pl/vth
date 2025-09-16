@@ -1,0 +1,120 @@
+---
+title: Routing
+description: Routing in vth with RSC
+icon: Milestone
+---
+
+import { File, Folder, Files } from 'fumadocs-ui/components/files';
+import { SiReact } from '@icons-pack/react-simple-icons';
+
+## Routing
+
+Routing is made with [vite-plugin-rsc-pages](https://github.com/mrozio13pl/vite-plugin-rsc-pages) which provides **file-system based routing**. It's configured to mimic Next.js-like experience, but can also be configured to use custom paths.
+
+<Files>
+    <Folder name="app" defaultOpen>
+        <Folder name="members" defaultOpen>
+            <File icon={<SiReact />} name="page.tsx" />
+            <Folder name="[id]" defaultOpen>
+                <File icon={<SiReact />} name="page.tsx" />
+            </Folder>
+        </Folder>
+        <File icon={<SiReact />} name="layout.tsx" />
+        <File icon={<SiReact />} name="page.tsx" />
+    </Folder>
+</Files>
+
+In this example `app/layout.tsx` will be used as a layout for all pages in `app` directory.
+
+The `app/page.tsx` will be available at `/`.
+
+The `app/members/page.tsx` will be available at `/members` and to see a member with specific id it will be accessible under a dynamic path like `/members/123`.
+
+### Page
+
+A page is a route defined for a specific path. You can create a page by creating a file `page.tsx` inside `app` directory. The file should export a `default` component.
+
+```tsx title="app/page.tsx"
+'use client';
+
+import type { PageProps } from '~rsc';
+
+export default function Page({ /* ... */ }: PageProps) {
+    return <h1>Home</h1>;
+}
+```
+
+### Layout
+
+A layout is shared across all pages in a specific directory. You can create a layout by creating a file `layout.tsx` inside `app` directory. The file should export a `default` component with a `children` prop.
+
+```tsx title="app/layout.tsx"
+'use client';
+
+import type { LayoutProps } from '~rsc';
+
+export default function Layout({ children }: LayoutProps) {
+    return (
+        <div className="flex items-center justify-center h-screen w-screen">{children}</div>
+    );
+}
+```
+
+### Not found
+
+A not found page is a page used within a specific directory. You can create a not found page by creating a file `not-found.tsx`.
+
+```tsx title="app/not-found.tsx"
+'use client';
+
+import type { PageProps } from '~rsc';
+
+export default function NotFound({ /* ... */ }: PageProps) {
+    return <h1>404</h1>;
+}
+```
+
+## Directives
+
+You can define whether a component should be use client-only or server-only using `use client` or `use server` directives respectively at the top of the file.
+
+### use client
+
+When using `use client`, the component will be rendered on the client side. It should be used for components that require client-side JavaScript logic.
+
+```tsx title="components/counter.tsx"
+'use client'; // [!code highlight]
+
+import { useState } from 'react';
+
+export function Counter() {
+    const [count, setCount] = useState(0);
+
+    return (
+        <div>
+            <p>Count: {count}</p>
+            <button onClick={() => setCount(count + 1)}>Increment</button>
+        </div>
+    );
+}
+```
+
+### use server
+
+When using `use server`, the component will be rendered on the server side. It should be used for components that require server-side JavaScript logic or don't require client-side JavaScript logic. It needs to be an asynchronous function.
+
+```tsx title="app/users/page.tsx"
+'use server'; // [!code highlight]
+
+export default async function Users() {
+    const users = await getUsersFromDatabase();
+
+    return (
+        <div>
+            {users.map((user) => (
+                <p key={user.id}>{user.name}</p>
+            ))}
+        </div>
+    );
+}
+```

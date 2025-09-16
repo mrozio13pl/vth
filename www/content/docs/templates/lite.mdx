@@ -50,3 +50,15 @@ The project structure is very similar to the full-stack template:
 </Files>
 
 > Note: This setup doesn't include [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages) for routing out of the box.
+
+#### Hot refresh
+
+For development, you have to include a seperate script to handle hot refresh. This is because plugins like [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react) can't inject the refresh script when working with Hono.
+
+```ts title="server/refresh.ts"
+import RefreshRuntime from '/@react-refresh';
+RefreshRuntime.injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$RefreshSig$ = () => (type) => type;
+window.__vite_plugin_react_preamble_installed__ = true;
+```

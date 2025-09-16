@@ -6,7 +6,7 @@ import { FeatureCard } from '@/components/ui/feature-grid';
 import { MockupCode, MockupCodeLine } from '@/components/ui/mockup-code';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { GITHUB } from '@/lib/constants';
-import { SiBetterauth, SiBetterauthHex, SiEslint, SiEslintHex, SiGithub, SiHono, SiHonoHex, SiLucide, SiLucideHex, SiReact, SiReactHex, SiReactrouter, SiReactrouterHex, SiShadcnui, SiSharp, SiSharpHex, SiSqlite, SiSqliteHex, SiUnocss, SiUnocssHex, SiVite, SiViteHex } from '@icons-pack/react-simple-icons';
+import { SiBetterauth, SiBetterauthHex, SiEslint, SiEslintHex, SiGithub, SiHono, SiHonoHex, SiLucide, SiLucideHex, SiReact, SiReactHex, SiReactrouterHex, SiShadcnui, SiSharp, SiSharpHex, SiSqlite, SiSqliteHex, SiUnocss, SiUnocssHex, SiVite, SiViteHex } from '@icons-pack/react-simple-icons';
 import { BicepsFlexed, Brain, Cpu, Layers2, Layers3, Lollipop, Rocket, Zap } from 'lucide-react';
 import { Link } from 'react-router';
 
@@ -46,7 +46,7 @@ const features = [
 export function meta() {
     return [
         { title: 'vth stack' },
-        { name: 'description', content: 'A full-stack template powered by Vite, Typescript, Hono and React, with a shared, strongly typed codebase for both client and server.' },
+        { name: 'description', content: 'A full-stack template powered by Vite, Typescript, Hono and React Server Components, with a shared, strongly typed codebase for both client and server.' },
     ];
 }
 
@@ -102,7 +102,7 @@ export default function Home() {
                         </MockupCode>
 
                         <p className="text-2xl mt-10 max-w-[600px] text-pretty leading-relaxed opacity-80">
-                            A full-stack template powered by Vite, Typescript, Hono and React, with a shared, strongly typed codebase for both client and server.
+                            A full-stack template powered by Vite, Typescript, Hono and React Server Components, with a shared, strongly typed codebase for both client and server.
                         </p>
 
                         <div className="mt-10 flex items-center gap-4 hover:[&>button]:-translate-y-1 [&>button]:transition-all [&>button]:duration-200 [&>button]:delay-100">
@@ -223,6 +223,10 @@ export default function Home() {
                                             <b>React</b> - a framework for the frontend
                                         </span>
                                         <span>
+                                            <SiReact size={16} color={SiReactrouterHex} />
+                                            <b>RSC</b> for server-side rendering and filesystem routing
+                                        </span>
+                                        <span>
                                             <SiUnocss size={16} color={SiUnocssHex} />
                                             <b>UnoCSS</b> - styling with classes (basically better Tailwind)
                                         </span>
@@ -243,15 +247,11 @@ export default function Home() {
                                             <b>SQLite</b> database with <b>Kysely</b> for query building
                                         </span>
                                         <span>
-                                            <SiReactrouter size={16} color={SiReactrouterHex} />
-                                            Navigation using <b>vite-plugin-pages</b> and <b>React Router</b>
-                                        </span>
-                                        <span>
                                             <SiSharp size={16} color={SiSharpHex} />
                                             Image optimization with <b>Sharp</b> and <b>SVGO</b>
                                         </span>
                                         <span>
-                                            <img src="/react-scan.svg" className="size-4" />
+                                            <img src="./react-scan.svg" className="size-4" />
                                             <b>React Scan</b> for detecting performance issues
                                         </span>
                                         <span>

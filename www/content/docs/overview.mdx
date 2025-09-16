@@ -14,8 +14,8 @@ After you initialized your project, the structure should look something like thi
 <Files>
     <Folder name="vth" defaultOpen>
         <Folder name="app" defaultOpen>
-            <File icon={<SiReact />} name="index.tsx" />
-            <Folder name="pages" />
+            <File icon={<SiReact />} name="layout.tsx" />
+            <File icon={<SiReact />} name="page.tsx" />
         </Folder>
 
         <Folder name="components" defaultOpen>
@@ -34,7 +34,7 @@ After you initialized your project, the structure should look something like thi
 
         <Folder name="server" defaultOpen>
             <File icon={<SiReact />} name="index.tsx" />
-            <File icon={<SiReact />} name="refresh.tsx" />
+            <Folder name="routes" defaultOpen />
         </Folder>
 
         <File name="package.json" icon={<SiNpm />} />
@@ -50,9 +50,9 @@ After you initialized your project, the structure should look something like thi
 
 ### Build tool
 
-This template is centered around [Vite](https://vite.dev/) as it's very flexible and hackable, providing good DX while  simultaneously handling client and server.
+This template is centered around [Vite](https://vite.dev/) as it's very flexible and hackable, providing good DX while simultaneously handling client and server.
 
-#### Why VIte?
+#### Why Vite?
 
 - Way more performant with [rolldown](https://rolldown.rs/) (replacement for esbuild and rollup) than bundlers like webpack
 - Very customizable when it comes to complex apps
@@ -65,15 +65,11 @@ The frontend is built with [React](https://react.dev/), but it shouldn't be diff
 
 #### Routing
 
-Routing is made with [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages) and [react-router](https://reactrouter.com/) which is configured to mimic Next.js-like frontend experience.
+Routing is made with [vite-plugin-rsc-pages](https://github.com/mrozio13pl/vite-plugin-rsc-pages) and [@vite/plugin-rsc](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-rsc) which is configured to mimic Next.js-like experience.
 
 #### Styling
 
-CSS is mostly done with [UnoCSS](https://unocss.dev/), a flexible atomic CSS engine, basically a more extensible, un-opinionated alternative to [TailwindCSS](https://tailwindcss.com/).
-
-[LightningCSS](https://lightningcss.dev/) is used for CSS minification.
-
-Style reset comes from [Eric Meyer CSS Reset](https://meyerweb.com/eric/tools/css/reset/index.html) provided by [@unocss/reset](https://unocss.dev/guide/style-reset).
+CSS is mostly done with [TailwindCSS](https://tailwindcss.com/).
 
 #### UI Components
 
@@ -82,7 +78,7 @@ Style reset comes from [Eric Meyer CSS Reset](https://meyerweb.com/eric/tools/cs
 
 ### Backend
 
-The backend is build with [Hono](https://hono.dev/) and its [Vite plugins](https://github.com/honojs/vite-plugins).
+The backend is build with [Hono](https://hono.dev/).
 
 #### Why Hono?
 

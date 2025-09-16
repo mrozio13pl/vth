@@ -1,3 +1,8 @@
 {
-  "description": "Guides"
+  "description": "Guides",
+  "pages": [
+    "rsc",
+    "frontend",
+    "backend"
+  ]
 }
