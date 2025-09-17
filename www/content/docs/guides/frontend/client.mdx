@@ -4,9 +4,6 @@ description: Client side structure and features
 icon: Globe
 ---
 
-import { File, Folder, Files } from 'fumadocs-ui/components/files';
-import { SiReact } from '@icons-pack/react-simple-icons';
-
 ## Client
 
 The frontend is written in [React](https://react.dev/).
@@ -14,24 +11,6 @@ The frontend is written in [React](https://react.dev/).
 ### Why React?
 
 React is a popular library for building user interfaces, it's fast, flexible and has a large ecosystem built around it.
-
-### Routing
-
-Routing is made with [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages) and [react-router](https://reactrouter.com/) which is configured to mimic Next.js-like frontend experience.
-
-<Files>
-    <Folder name="app" defaultOpen>
-        <File icon={<SiReact />} name="index.tsx" defaultOpen />
-        <Folder name="pages" defaultOpen>
-            <File icon={<SiReact />} name="index.tsx" />
-            <File icon={<SiReact />} name="example.tsx" />
-        </Folder>
-    </Folder>
-</Files>
-
-- `app/index.tsx` is the main entry point for the app
-- `app/pages/index.tsx` is the home page
-- `app/pages/example.tsx` is the example page which can be accessed via `/example` in the browser
 
 ### tRPC
 
@@ -69,4 +48,39 @@ You can use [react-hook-form](https://react-hook-form.com/) to handle forms.
 
 For monitoring performance issues on the client in development, [React Scan](https://react-scan.com/) is a tool that helps you identify them without having to do any code changes.
 
-The script is injected in the [backend](/docs/guides/backend/server#how-to-use-it-in-vth).
+The script is injected in the root layout of the app only in development:
+
+```tsx title="components/react-scan.tsx"
+'use client';
+
+// react-scan must be imported before react
+import { scan } from 'react-scan';
+import { type JSX, useEffect } from 'react';
+
+export function ReactScan(): JSX.Element {
+    useEffect(() => {
+        scan({
+            enabled: true,
+        });
+    }, []);
+
+    return <></>;
+}
+```
+
+```tsx title="app/layout.tsx"
+import { ReactScan } from '@/components/react-scan'; // [!code ++]
+// ...
+
+export default function Root({ children }: LayoutProps) {
+    return (
+        <html lang="en" suppressHydrationWarning>
+            <head>
+                {/* ... */}
+                {import.meta.env.DEV && <ReactScan />}
+            </head>
+            {/* ... */}
+        </html>
+    );
+}
+```
