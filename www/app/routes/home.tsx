@@ -6,7 +6,7 @@ import { FeatureCard } from '@/components/ui/feature-grid';
 import { MockupCode, MockupCodeLine } from '@/components/ui/mockup-code';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { GITHUB } from '@/lib/constants';
-import { SiBetterauth, SiBetterauthHex, SiEslint, SiEslintHex, SiGithub, SiHono, SiHonoHex, SiLucide, SiLucideHex, SiReact, SiReactHex, SiReactrouterHex, SiShadcnui, SiSharp, SiSharpHex, SiSqlite, SiSqliteHex, SiUnocss, SiUnocssHex, SiVite, SiViteHex } from '@icons-pack/react-simple-icons';
+import { SiBetterauth, SiBetterauthHex, SiEslint, SiEslintHex, SiGithub, SiHono, SiHonoHex, SiLucide, SiLucideHex, SiReact, SiReactHex, SiReactrouterHex, SiShadcnui, SiSharp, SiSharpHex, SiSqlite, SiSqliteHex, SiTailwindcss, SiTailwindcssHex, SiVite, SiViteHex } from '@icons-pack/react-simple-icons';
 import { BicepsFlexed, Brain, Cpu, Layers2, Layers3, Lollipop, Rocket, Zap } from 'lucide-react';
 import { Link } from 'react-router';
 
@@ -227,8 +227,8 @@ export default function Home() {
                                             <b>RSC</b> for server-side rendering and filesystem routing
                                         </span>
                                         <span>
-                                            <SiUnocss size={16} color={SiUnocssHex} />
-                                            <b>UnoCSS</b> - styling with classes (basically better Tailwind)
+                                            <SiTailwindcss size={16} color={SiTailwindcssHex} />
+                                            <b>TailwindCSS</b> - styling with classes
                                         </span>
                                         <span>
                                             <SiShadcnui size={16} color="#fff" />

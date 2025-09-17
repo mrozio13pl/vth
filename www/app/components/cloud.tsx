@@ -8,7 +8,7 @@ const icons = [
     'vite',
     'hono',
     'sqlite',
-    'unocss',
+    'tailwindcss',
     'shadcnui',
     'react',
     'nodedotjs',
