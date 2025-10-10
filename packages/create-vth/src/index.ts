@@ -1,6 +1,7 @@
 import { cli } from 'cleye';
 import * as prompts from '@clack/prompts';
 import isValidFilename from 'valid-filename';
+import { getUserAgent } from 'package-manager-detector';
 import path from 'node:path';
 import fs from 'node:fs';
 import { generateLogo } from '@/lib/logo';
@@ -31,9 +32,13 @@ const argv = cli({
             type: Boolean,
             description: 'use lite template',
         },
+        install: {
+            type: Boolean,
+            description: 'install dependencies',
+        },
         nolyfill: {
             type: Boolean,
-            description: 'remove old polyfills',
+            description: 'remove redundant polyfills',
         },
         rolldown: {
             type: Boolean,
@@ -56,6 +61,7 @@ export default async function init() {
         name: argv._.projectName || '',
         packageName: argv.flags.packageName || argv._.projectName || '',
         lite: argv.flags.lite,
+        install: argv.flags.install,
         nolyfill: argv.flags.nolyfill,
         rolldown: argv.flags.rolldown,
         override: argv.flags.override,
@@ -131,12 +137,23 @@ export default async function init() {
 
     if (prompts.isCancel(defaults.rolldown)) return cancel();
 
-    defaults.nolyfill = defaults.nolyfill ?? await prompts.confirm({
-        message: 'Remove old polyfills with nolyfill?',
-        initialValue: false,
+    defaults.install = defaults.install ?? await prompts.confirm({
+        message: `Install dependencies with ${getUserAgent() || 'npm'}?`,
+        initialValue: true,
     }) as boolean;
 
-    if (prompts.isCancel(defaults.nolyfill)) return cancel();
+    if (prompts.isCancel(defaults.install)) return cancel();
+
+    if (defaults.install) {
+        defaults.nolyfill = defaults.nolyfill ?? await prompts.confirm({
+            message: 'Remove redundant polyfills with nolyfill?',
+            initialValue: false,
+        }) as boolean;
+
+        if (prompts.isCancel(defaults.nolyfill)) return cancel();
+    } else {
+        defaults.nolyfill = false;
+    }
 
     try {
         scaffold(defaults);

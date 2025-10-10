@@ -5,7 +5,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { existsSync } from 'node:fs';
 import { fdir } from 'fdir';
-import { detect } from 'package-manager-detector/detect';
+import { getUserAgent } from 'package-manager-detector/detect';
 import { COMMANDS, constructCommand } from 'package-manager-detector/commands';
 import { LOCKS } from 'package-manager-detector/constants';
 import { execPmCommand } from '@/lib/exec';
@@ -55,25 +55,27 @@ export async function scaffold(options: ProjectOptions) {
 
     spinner.message?.('Detecting package manager...');
 
-    const pm = await detect();
-    const pmName = pm?.name || 'npm';
+    const pm = getUserAgent();
+    const pmName = pm || 'npm';
 
     spinner.message?.(`Installing dependencies with ${pmName}...`);
 
-    const installCmd = constructCommand(COMMANDS[pmName].install, [])!;
-    await spawn(installCmd.command, installCmd.args, { cwd: dist });
+    if (options.install) {
+        const installCmd = constructCommand(COMMANDS[pmName].install, [])!;
+        await spawn(installCmd.command, installCmd.args, { cwd: dist });
 
-    if (options.nolyfill) {
-        spinner.message?.('Removing polyfills...');
+        if (options.nolyfill) {
+            spinner.message?.('Removing polyfills...');
 
-        if (!Object.keys(LOCKS).some((lock) => existsSync(joindist(lock)))) {
-            prompts.log.warn('No lockfile found, skipping polyfill removal');
-        } else {
-            const cmd = await execPmCommand(pm, 'nolyfill install');
-            await spawn(cmd.command, cmd.args, { cwd: dist });
+            if (!Object.keys(LOCKS).some((lock) => existsSync(joindist(lock)))) {
+                prompts.log.warn('No lockfile found, skipping polyfill removal');
+            } else {
+                const cmd = await execPmCommand(pm, 'nolyfill install');
+                await spawn(cmd.command, cmd.args, { cwd: dist });
 
-            if (pmName === 'npm') {
-                await spawn('npm', ['update'], { cwd: dist });
+                if (pmName === 'npm') {
+                    await spawn('npm', ['update'], { cwd: dist });
+                }
             }
         }
     }

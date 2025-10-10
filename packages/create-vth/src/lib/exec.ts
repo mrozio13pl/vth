@@ -1,6 +1,6 @@
 import { resolveCommand } from 'package-manager-detector/commands';
-import type { DetectResult } from 'package-manager-detector';
+import type { Agent } from 'package-manager-detector';
 
-export async function execPmCommand(pm: DetectResult | null, cmd: string) {
-    return resolveCommand(pm?.agent || 'npm', 'execute', cmd.split(' '))!;
+export async function execPmCommand(pm: Agent | null, cmd: string) {
+    return resolveCommand(pm || 'npm', 'execute', cmd.split(' '))!;
 }
