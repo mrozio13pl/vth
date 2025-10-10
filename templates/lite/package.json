@@ -9,19 +9,19 @@
     "start": "node ."
   },
   "dependencies": {
-    "@hono/node-server": "^1.19.2",
-    "hono": "^4.9.7",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "@hono/node-server": "^1.19.5",
+    "hono": "^4.9.10",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@hono/vite-build": "^1.7.0",
-    "@hono/vite-dev-server": "^0.21.0",
-    "@types/node": "^24.4.0",
-    "@types/react": "^19.1.13",
-    "@types/react-dom": "^19.1.9",
-    "@vitejs/plugin-react": "^5.0.2",
-    "typescript": "^5.9.2",
-    "vite": "npm:rolldown-vite@^7.1.9"
+    "@hono/vite-dev-server": "^0.23.0",
+    "@types/node": "^24.7.1",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.1",
+    "@vitejs/plugin-react": "^5.0.4",
+    "typescript": "^5.9.3",
+    "vite": "npm:rolldown-vite@^7.1.16"
   }
 }
