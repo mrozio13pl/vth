@@ -91,8 +91,7 @@ export async function scaffold(options: ProjectOptions) {
         prompts.log.message(`Next steps:
 
 ${ansis.dim.yellow(`cd ${options.name}
-${pmName} install
-${pmName} run dev`)}`);
+${options.install ? pmName + ' install\n' : ''}${pmName} run dev`)}`);
 
         prompts.outro('Happy hacking!');
     } else {
@@ -102,7 +101,7 @@ ${pmName} run dev`)}`);
     ${ansis.dim.yellow(`cd ${options.name}
     ${pmName} install
     ${pmName} run dev`)}
-    
+
     Happy hacking! ${unicodeFallback('🚀')}
     `);
     }
